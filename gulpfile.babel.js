@@ -13,7 +13,7 @@ import get from 'lodash/get';
 
 const browserSync = BrowserSync.create();
 
-const SOURCE_BASE = process.env.ASSET_INPUT_DIR || 'input/';
+const SOURCE_BASE = process.env.ASSET_INPUT_DIR || 'src/';
 const OUTPUT_BASE = process.env.ASSET_OUTPUT_DIR || 'output/';
 
 gutil.log('INPUT_DIR: '+SOURCE_BASE);
