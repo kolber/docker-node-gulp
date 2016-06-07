@@ -19,8 +19,8 @@ const OUTPUT_BASE = process.env.ASSET_OUTPUT_DIR || 'output/';
 gutil.log('INPUT_DIR: '+SOURCE_BASE);
 gutil.log('OUTPUT_DIR: '+OUTPUT_BASE);
 
-const GLOB_SCRIPTS = 'src/**/*.js';
-const GLOB_STYLES = 'src/**/*.css';
+const GLOB_SCRIPTS = SOURCE_BASE+'/**/*.js';
+const GLOB_STYLES =  SOURCE_BASE+'/**/*.css';
 
 gulp.task('dev', ['browser-sync', 'scripts', 'styles', 'watch']);
 gulp.task('default', ['scripts', 'styles']);
