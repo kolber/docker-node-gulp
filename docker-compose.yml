@@ -1,0 +1,8 @@
+build:
+  build: .
+  environment:
+    - ASSET_INPUT_DIR=input/
+    - ASSET_OUTPUT_DIR=/var/www/html/wp-content/themes/hotel-hotel/assets
+  volumes:
+    - ./input:/temp/input
+    - /var/www/html/wp-content/themes
