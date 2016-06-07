@@ -1,0 +1,41 @@
+{
+  "name": "hotel-hotel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "gulp",
+    "dev": "gulp dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolber/hotel-hotel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kolber/hotel-hotel/issues"
+  },
+  "homepage": "https://github.com/kolber/hotel-hotel#readme",
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "browser-sync": "^2.12.10",
+    "cssnext": "^1.8.4",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-postcss": "^6.1.1",
+    "js-yaml": "^3.6.1",
+    "postcss-cssnext": "^2.6.0",
+    "precss": "^1.4.0",
+    "webpack": "^1.13.1",
+    "webpack-stream": "^3.2.0"
+  },
+  "dependencies": {
+    "lodash": "^4.13.1"
+  }
+}
