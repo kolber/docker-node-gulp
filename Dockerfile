@@ -9,4 +9,4 @@ ADD .babelrc /temp/.babelrc
 ADD webpack.config.babel.js /temp/webpack.config.babel.js
 RUN npm install
 
-ENTRYPOINT ["npm", "run", "build"]
+CMD ["npm", "run", "build"]
