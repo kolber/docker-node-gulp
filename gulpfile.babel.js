@@ -32,13 +32,13 @@ const dockerPort = process.env.WEB_PORT || '80'
 
 gulp.task('scripts', () => {
   return src('main.js')
-    .pipe(webpack(webpackConfig))
+    .pipe(webpack(webpackConfig).on('error', gutil.log))
     .pipe(dest('js'))
 });
 
 gulp.task('styles', () => {
   return src('main.css')
-    .pipe(postcss([precss(), cssnext()]))
+    .pipe(postcss([precss(), cssnext()]).on('error', gutil.log))
     .pipe(dest('css'))
 });
 
