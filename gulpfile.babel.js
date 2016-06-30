@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import gutil from 'gulp-util';
+import plumber from 'gulp-plumber';
 import postcss from 'gulp-postcss';
 import precss from 'precss';
 import cssnext from 'postcss-cssnext';
@@ -32,13 +33,15 @@ const dockerPort = process.env.WEB_PORT || '80'
 
 gulp.task('scripts', () => {
   return src('main.js')
-    .pipe(webpack(webpackConfig).on('error', gutil.log))
+    .pipe(plumber())
+    .pipe(webpack(webpackConfig))
     .pipe(dest('js'))
 });
 
 gulp.task('styles', () => {
   return src('main.css')
-    .pipe(postcss([precss(), cssnext()]).on('error', gutil.log))
+    .pipe(plumber())
+    .pipe(postcss([precss(), cssnext()]))
     .pipe(dest('css'))
 });
 
