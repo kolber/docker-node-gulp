@@ -29,7 +29,6 @@ const src = file => gulp.src(path.join(SOURCE_BASE, file));
 const dockerPort = process.env.WEB_PORT || '80'
 
 function errorHandler(err) {
-  console.log('Caught an error:');
   console.log(err);
   this.emit('end');
 }
