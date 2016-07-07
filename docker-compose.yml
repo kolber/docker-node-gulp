@@ -1,6 +1,9 @@
 build:
   build: .
+  command: ['npm', 'run', 'dev']
   environment:
-    - ASSET_OUTPUT_DIR=/var/www/html/wp-content/themes/hotel-hotel/assets
+    - ASSET_INPUT_DIR=src/
+    - ASSET_OUTPUT_DIR=/output
   volumes:
-    - /var/www/html/wp-content/themes
+    - ./src:/temp/src
+
