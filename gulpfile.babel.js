@@ -34,6 +34,10 @@ gulp.task('js', () => {
   return browserify(process.env.JS_IN)
     .transform('babelify')
     .bundle()
+    .on('error', function(err) {
+      console.error(err);
+      this.emit('end');
+    })
     .pipe(source('index.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init())
