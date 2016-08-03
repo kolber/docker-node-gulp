@@ -1,12 +1,10 @@
 FROM node
 
 RUN mkdir /temp
-
 WORKDIR /temp
-ADD package.json /temp/package.json
-ADD gulpfile.babel.js /temp/gulpfile.babel.js
-ADD .babelrc /temp/.babelrc
-ADD webpack.config.babel.js /temp/webpack.config.babel.js
+CMD ["npm", "run", "build"]
+
+COPY package.json /temp
 RUN npm install
 
-CMD ["npm", "run", "build"]
+COPY . /temp

@@ -1,53 +1,71 @@
 import gulp from 'gulp';
 import gutil from 'gulp-util';
-import plumber from 'gulp-plumber';
-import postcss from 'gulp-postcss';
-import precss from 'precss';
-import cssnext from 'postcss-cssnext';
+import browserify from 'browserify';
+import babelify from 'babelify';
+import assert from 'assert';
+import rename from 'gulp-rename';
+import source from 'vinyl-source-stream';
+import buffer from 'vinyl-buffer';
 import path from 'path';
-import webpack from 'webpack-stream';
-import webpackConfig from './webpack.config.babel.js';
-import yaml from 'js-yaml';
-import fs from 'fs';
-import get from 'lodash/get';
+import sass from 'gulp-sass';
+import sourcemaps from 'gulp-sourcemaps';
 
-const SOURCE_BASE = process.env.ASSET_INPUT_DIR || 'src/';
-const OUTPUT_BASE = process.env.ASSET_OUTPUT_DIR || 'output/';
+console.log(`JS: ${process.env.JS_IN} => ${process.env.JS_OUT}`);
+console.log(`CSS: ${process.env.CSS_IN} => ${process.env.CSS_OUT}`);
 
-gutil.log('INPUT_DIR: '+SOURCE_BASE);
-gutil.log('OUTPUT_DIR: '+OUTPUT_BASE);
+gulp.task('dev', ['css', 'js', 'watch']);
+gulp.task('default', ['css', 'js']);
 
-const GLOB_SCRIPTS = SOURCE_BASE+'/**/*.js';
-const GLOB_STYLES =  SOURCE_BASE+'/**/*.css';
-
-gulp.task('dev', ['scripts', 'styles', 'watch']);
-gulp.task('default', ['scripts', 'styles']);
-
-const dest = dir => gulp.dest(path.join(OUTPUT_BASE, dir));
-const src = file => gulp.src(path.join(SOURCE_BASE, file));
-
-const dockerPort = process.env.WEB_PORT || '80'
+const dockerPort = process.env.WEB_PORT || '80';
 
 function errorHandler(err) {
-  console.log(err);
+  console.error(err);
   this.emit('end');
 }
 
-gulp.task('scripts', () => {
-  return src('main.js')
-    .pipe(plumber({ errorHandler }))
-    .pipe(webpack(webpackConfig))
-    .pipe(dest('js'))
+gulp.task('js', () => {
+  assert(process.env.JS_IN && process.env.JS_OUT, 'JS_IN and JS_OUT not defined');
+
+  console.log('Compiling', process.env.JS_IN);
+
+  const JS_OUT_DIR = path.dirname(process.env.JS_OUT);
+  const JS_OUT_FILE = path.basename(process.env.JS_OUT);
+
+  return browserify(process.env.JS_IN)
+    .transform('babelify')
+    .bundle()
+    .pipe(source('index.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init())
+    .pipe(rename(JS_OUT_FILE))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(JS_OUT_DIR));
 });
 
-gulp.task('styles', () => {
-  return src('main.css')
-    .pipe(plumber({ errorHandler }))
-    .pipe(postcss([precss(), cssnext()]))
-    .pipe(dest('css'))
+gulp.task('css', () => {
+  assert(process.env.CSS_IN && process.env.CSS_OUT, 'CSS_IN and CSS_OUT not defined');
+
+  console.log('Compiling', process.env.CSS_IN);
+
+  const CSS_OUT_DIR = path.dirname(process.env.CSS_OUT);
+  const CSS_OUT_FILE = path.basename(process.env.CSS_OUT);
+
+  return gulp.src(process.env.CSS_IN)
+    .pipe(sourcemaps.init())
+    .pipe(sass().on('error', sass.logError))
+    .pipe(rename(CSS_OUT_FILE))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(CSS_OUT_DIR));
 });
 
 gulp.task('watch', () => {
-  gulp.watch(GLOB_SCRIPTS, { interval: 500, usePolling: true }, ['scripts']);
-  gulp.watch(GLOB_STYLES, { interval: 500, usePolling: true }, ['styles']);
+  if(process.env.JS_WATCH) {
+    console.log('Watching', process.env.JS_WATCH);
+    gulp.watch(process.env.JS_WATCH, { interval: 500, usePolling: true }, ['js']);
+  }
+
+  if(process.env.CSS_WATCH) {
+    console.log('Watching', process.env.CSS_WATCH);
+    gulp.watch(process.env.CSS_WATCH, { interval: 500, usePolling: true }, ['css']);
+  }
 });

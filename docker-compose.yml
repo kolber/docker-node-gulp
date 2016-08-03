@@ -2,8 +2,10 @@ build:
   build: .
   command: ['npm', 'run', 'dev']
   environment:
-    - ASSET_INPUT_DIR=src/
-    - ASSET_OUTPUT_DIR=/output
+    - JS_IN=src/js/main.js
+    - JS_OUT=/output/bundle.js
+    - CSS_IN=src/css/main.css
+    - CSS_OUT=/output/bundle.css
   volumes:
     - ./src:/temp/src
-
+    - ./output:/output
