@@ -56,10 +56,14 @@ gulp.task('css', () => {
   const CSS_OUT_DIR = path.dirname(process.env.CSS_OUT);
   const CSS_OUT_FILE = path.basename(process.env.CSS_OUT);
 
+  const autoprefixerOptions = {
+    browsers: ['ie >= 10']
+  }
+
   return gulp.src(process.env.CSS_IN)
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
-    .pipe(postcss([autoprefixer()]))
+    .pipe(postcss([autoprefixer(autoprefixerOptions)]))
     .pipe(rename(CSS_OUT_FILE))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(CSS_OUT_DIR));
