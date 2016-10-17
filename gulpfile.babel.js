@@ -57,7 +57,7 @@ gulp.task('css', () => {
   const CSS_OUT_FILE = path.basename(process.env.CSS_OUT);
 
   const autoprefixerOptions = {
-    browsers: ['ie >= 10']
+    browsers: ['ie >= 10', 'last 2 versions']
   }
 
   return gulp.src(process.env.CSS_IN)
