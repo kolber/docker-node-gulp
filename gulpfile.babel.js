@@ -8,6 +8,8 @@ import source from 'vinyl-source-stream';
 import buffer from 'vinyl-buffer';
 import path from 'path';
 import sass from 'gulp-sass';
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
 import sourcemaps from 'gulp-sourcemaps';
 
 console.log(`JS: ${process.env.JS_IN} => ${process.env.JS_OUT}`);
@@ -57,6 +59,7 @@ gulp.task('css', () => {
   return gulp.src(process.env.CSS_IN)
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
+    .pipe(postcss([autoprefixer()]))
     .pipe(rename(CSS_OUT_FILE))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(CSS_OUT_DIR));
