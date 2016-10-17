@@ -9,6 +9,8 @@ import buffer from 'vinyl-buffer';
 import path from 'path';
 import sass from 'gulp-sass';
 import sourcemaps from 'gulp-sourcemaps';
+import postcss from 'gulp-postcss'
+import autoprefixer from 'autoprefixer'
 
 console.log(`JS: ${process.env.JS_IN} => ${process.env.JS_OUT}`);
 console.log(`CSS: ${process.env.CSS_IN} => ${process.env.CSS_OUT}`);
@@ -17,6 +19,10 @@ gulp.task('dev', ['css', 'js', 'watch']);
 gulp.task('default', ['css', 'js']);
 
 const dockerPort = process.env.WEB_PORT || '80';
+
+const autoprefixerOpts = {
+  browsers: ['ie >= 10', 'last 2 versions']
+}
 
 function errorHandler(err) {
   console.error(err);
@@ -57,6 +63,7 @@ gulp.task('css', () => {
   return gulp.src(process.env.CSS_IN)
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
+    .pipe(postcss([autoprefixer(autoprefixerOpts)]))
     .pipe(rename(CSS_OUT_FILE))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(CSS_OUT_DIR));
